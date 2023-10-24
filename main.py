@@ -49,7 +49,7 @@ async def bed1_handler():
                 bed1_prev_state = True
                 LED1.freq(800)
                 LED1.duty_u16(30000)
-                buzzer.freq(300)
+                buzzer.freq(400)
                 buzzer.duty_u16(64000)
                 print("Bed 1 has been pressed")
                 
