@@ -63,7 +63,7 @@ async def bed1_pb_handler():
         await asyncio.sleep_ms(10)
         global bed1_prev_state
         if bed1_prev_state == 1:
-            print("It's a go go!1")
+            print("It's a no go!1")
             await client.publish(f'{room_num}-1', f'Room {room_num}-1 has been pressed', qos = 1)
 
         
