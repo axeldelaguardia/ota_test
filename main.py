@@ -6,11 +6,14 @@ import uasyncio as asyncio
 from machine import Pin, PWM
 import utime
 import network
+from ota import OTAUpdater
+from secrets import wifi_ssid, wifi_pw
 
 room_num = '03'
 bathroom1 = '01'
 bathroom2 = '03'
 
+# this is a comment
 #  this has fix for touchpad call lights and network ip address.
 
 TOPIC = f'Room {room_num}'
@@ -283,6 +286,14 @@ async def room_status():
         await client.publish(f'Room {room_num}', str(wlan.ifconfig()), qos = 1)
         await asyncio.sleep(480)
         
+async def check_for_updates():
+    while True:
+        await asyncio.sleep(20)
+        firmware_url = "https://raw.githubusercontent.com/axeldelaguardia/ota_test/main/"
+        ota_updated = OTAUpdater(wifi_ssid, wifi_pw, firmware_url, "main.py")
+        ota_updated.download_and_install_update_if_available()
+        
+        
 async def main(client):
     asyncio.create_task(bed1_handler())
     asyncio.create_task(bed1_pb_handler())
@@ -305,6 +316,8 @@ async def main(client):
     asyncio.create_task(off_pb_handler())
   
     asyncio.create_task(room_status())
+    
+    asyncio.create_task(check_for_updates())
 
 
     try:
@@ -338,13 +351,3 @@ finally: # Prevent LmacRxBlk:1 errors.
   client.close()
   blue_led(True)
   asyncio.new_event_loop()
-
-
-from ota import OTAUpdater
-from secrets import wifi_ssid, wifi_pw
-
-firmware_url = "https://github.com/axeldelaguardia/ota_test/"
-
-ota_updated = OTAUpdater(wifi_ssid, wifi_pw, firmware_url, "main.py")
-
-ota_updated.download_and_install_update_if_available()
