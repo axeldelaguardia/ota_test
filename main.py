@@ -49,7 +49,7 @@ async def bed1_handler():
                 bed1_prev_state = True
                 LED1.freq(800)
                 LED1.duty_u16(30000)
-                buzzer.freq(2000)
+                buzzer.freq(300)
                 buzzer.duty_u16(64000)
                 print("Bed 1 has been pressed")
                 
@@ -252,7 +252,7 @@ async def messages(client):
             LED2.duty_u16(30000)
             buzzer.freq(300)
             buzzer.duty_u16(60000)
-        if msg == f'Room {room_num} reset':
+        if msg == 'Room 03 Reset':
             machine.reset()
         elif msg == f'Room {room_num} has been answered':
             LED1.duty_u16(0)
